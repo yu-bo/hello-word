@@ -1,0 +1,163 @@
+<html>
+
+<head>
+
+    <!-- <script type="text/javascript" src="static/js/sdk/star_rtc_video.min.js"></script> -->
+    <!-- <script type="text/javascript" src="static/js/sdk/star_rtc_lib.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="static/js/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <P> {{ message }} </P>
+        <button v-on:click="getDevcices">get devices</button>    
+        <button v-on:click="setVideo">set video</button>
+        <button v-on:click="call">call </button>
+        <button v-on:click="connect">connect</button>
+        <div v-for="(device, index) in devices">{{device.kind + ": " + device.label +" id = " + device.deviceId}}</div>
+        <video v-show="videoDisplay" id="video">Video stream not available.</video>
+        <div>
+            <input type="text" v-model="userName">
+            <button v-on:click="signin">sign in</button>
+            <span v-show="logincondition">{{userName + ":注册成功" }}</span>
+        </div>
+        
+    </div>
+
+    <script>
+        
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!',
+                videoDisplay: false,
+                devices: [],
+                wss :undefined,
+                userName:undefined,
+                logincondition:false,
+            },
+            methods: {
+                getDevcices: function () {
+                    console.log("getDevcices clicked");
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+                        console.log("不支持 enumerateDevices() .");
+                        return;
+                    }
+                    navigator.mediaDevices.enumerateDevices()
+                        .then(function (devices) {
+                            console.log(this);
+                            app.devices = devices;
+                            devices.forEach(function (device) {
+                                console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+                            })
+                        })
+                        .catch(function (err) {
+                            console.log(err.name + ": " + err.message);
+                        })
+                },
+                setVideo: function () {
+                    
+                    var servers = null;
+                    var constraints = window.constraints = {
+                        audio: false,
+                        video: true
+                    };
+                    var video = document.querySelector('video');
+                    console.log(video);
+                    navigator.mediaDevices.getUserMedia(constraints)
+                        .then(function (mediaStream) {
+                            var video = document.querySelector('video');
+                            video.srcObject = mediaStream;
+                            video.onloadedmetadata = function (e) {
+                                video.play();
+                            };
+                            app.videoDisplay=true;
+                        })
+                        .catch(function(err) { 
+                            console.log(err.name + ": " + err.message); 
+                        });
+
+                },
+                call:function(){
+                    console.log("call click");
+                    var pc =new RTCPeerConnection();
+                    var constraints = window.constraints = {
+                        audio: false,
+                        video: true
+                    };
+                    pc.onaddstream =function (evt){
+                        console.log("onaddstream");
+                        console.log(evt);
+                    };
+                    navigator.getUserMedia(constraints)
+                    .then(function(stream){
+                        pc.createOffer().then(function(offer){
+                            return pc.setLocalDescription(offer);
+                        })
+                        .then(function(){
+                            sendToServer({
+                                name: myUsername,
+                                target: targetUsername,
+                                type: "video-offer",
+                                sdp: pc.localDescription
+                            });
+                        })
+                        .catch(function(reason){
+                            console.log(reason)
+                        });
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+                },
+                connect:function(){
+                    if( !"WebSocket" in window){
+                        console.log("浏览器不支持 websocket");
+                        return;
+                    }
+                    app.wss=new WebSocket("wss://192.168.8.100:8000")
+                    app.wss.onopen =function(e){
+                        console.log("onopen");
+                    };
+                    app.wss.onmessage =function(e){
+                        console.log("onmessage ");
+                        console.log(e);
+                        var data= e.data;
+                        console.log(data);
+                        if(data.type=="signin"){
+                            console.log("signin success");
+                            app.logincondition=true;
+                        }
+                    };
+                    app.wss.onclose =function(e){
+                        console.log("onclose ");
+                    }
+
+                },
+                //next function
+                signin:function(){
+                    if(app.wss==undefined){
+                        console.log("websocket 未连接");
+                        return;
+                    }
+                    if(app.userName==undefined){
+                        console.log("用户名为设置");
+                        return;
+                    }
+                    var message={
+                        type:"signin",
+                        data:app.userName
+                    }
+                    app.wss.send(JSON.stringify(message));
+                },
+                //next function
+                
+            },
+        });
+
+    </script>
+</body>
+
+</html>

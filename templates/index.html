@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style>
+                body {
+                    margin: 0px;
+                    padding: 0px;
+                }
+        
+                .tab {
+                    width: 100%;
+                    height: 100%;
+                    /* 设置背景颜色，背景图加载过程中会显示背景色 */
+                    background-color: #464646;
+                }
+        
+                #mainTab {
+                    /* 加载背景图 */
+                    background-image: url(static/images/bg.jpg);
+                    /* 背景图垂直、水平均居中 */
+                    background-position: center center;
+                    /* 背景图不平铺 */
+                    /*background-repeat: no-repeat;*/
+                    /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
+                    background-attachment: fixed;
+                    /* 让背景图基于容器大小伸缩 */
+                    background-size: 100% 100%;
+        
+                }
+        
+                .loginInfo {
+                    padding-top: 50px;
+                }
+        
+                .userId {
+                    color: white;
+                    text-align: center;
+                    font-size: 16px;
+                }
+        
+                .backButton {
+                    padding: 20px 0px 0px 0px;
+                    text-align: center;
+                    font-size: 20px;
+                    width: 200px;
+                    height: 50px;
+                    background-color: black;
+                    color: white;
+                    cursor: pointer;
+                }
+                .userInfo{
+                    padding: 5px 0px 5px 0px;
+                    font-size: 15px;
+                    background-color: gray;
+                    color: white;
+                    cursor: pointer;
+                    border: white;
+                    /* border-style: none none solid none; */
+                }
+        
+                .contentcontent {
+                    background-color: #67CF22;
+                }
+        
+                .topic {
+                    border-radius: 20px;
+                    margin: 30px auto 30px auto;
+                    padding: 20px 0px 0px 0px;
+                    text-align: center;
+                    font-size: 20px;
+                    color: white;
+                    width: 400px;
+                    height: 40px;
+                    background-color: #3dc25a;
+                    cursor: pointer;
+                }
+        
+                .logintopic {
+                    margin: 5px auto 5px auto;
+                    padding: 0px 0px 0px 0px;
+                    text-align: center;
+                    font-size: 20px;
+                    color: white;
+                    width: 50px;
+                    height: 40px;
+                    background-color: #B22222;
+                    cursor: pointer;
+                }
+                .button {
+                    background-color: #4CAF50; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 5px 5px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+                .button2 {
+                    height: 30px;
+                    background-color: transparent;
+                    text-align: center;
+                    line-height: 30px;
+                    cursor: pointer;
+                    border: inset;
+                    border-width: 1px;
+                    border-color: transparent;
+                    border-bottom-color: #e5e5ce;
+                }
+        
+                .left {
+                    float: left;
+                    width: 20%;
+                    height: 100%;
+                    background-color: #ffffff;
+                }
+        
+                .left .backButton {
+                    width: 100%;
+                }
+        
+                .right {
+                    float: right;
+                    width: 80%;
+                    height: 100%;
+                }
+        
+                .title {
+                    padding: 20px 0px 0px 0px;
+                    text-align: center;
+                    font-size: 20px;
+                    width: 100%;
+                    height: auto;
+                    min-height: 50px;
+                    background-color: #464646;
+                    color: #ffffff;
+                }
+        
+                .messageButton {
+                    position: absolute;
+                    right: 20px;
+                    bottom: 20px;
+                    width: 100px;
+                    height: 100px;
+                    margin: auto;
+                    z-index: 1;
+                    background-color:red;
+                }
+        
+                #videoMeetingZone {
+                    width: 100%;
+                    margin: 0px auto 0px auto;
+                    background-color: #464646;
+                }
+        
+                .msgBubble {
+                    text-align: left;
+                    word-wrap: break-word;
+                    -moz-border-radius: 10px;
+                    -webkit-border-radius: 10px;
+                    border-radius: 10px;
+                    padding: 5px;
+                    margin: 5px auto 5px auto;
+                }
+        
+                .circle {
+                    border-radius: 50%;
+                    -moz-border-radius: 50%;
+                    -webkit-border-radius: 50%;
+                    text-align: center;
+                    font-size: 20px;
+                }
+        
+                .videoToolBar {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    width: 100%;
+                    height: 30px;
+                    line-height: 30px;
+                }
+        
+                .videoToolBarIcon {
+                    display: inline-block;
+                    width: 18px;
+                    height: 18px;
+                    margin-top: 6px;
+                    background-position: center center;
+                    background-size: 18px 18px;
+                    background-repeat: no-repeat;
+                    cursor: pointer;
+                }
+        </style>
+        <link rel="stylesheet" type="text/css" href="static/css/effect.css">
+        <link rel="stylesheet" type="text/css" href="static/css/jquery-ui.min.css">
+        <script type="text/javascript" src="static/js/adapter-latest.js"></script>
+        <script type="text/javascript" src="static/js/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="static/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="static/js/msg_box_plugin.js"></script>
+        <script type="text/javascript" src="static/js/sdk/star_rtc_video.min.js"></script>
+        <script type="text/javascript" src="static/js/sdk/star_rtc_lib.min.js"></script>
+        <script type="text/javascript" src="static/js/vue/vue.js"></script>
+        <script type="text/javascript" src="static/js/cookie_tools.js"></script>
+       
+    </head>
+
+    <body>
+        <div id="mainTab" class="tab">
+		    <div class="loginInfo">
+                <div class="userId" > 
+                    <image v-show="userImage"  src="static/images/user.png" />
+                    <div class="userId">{{currentID}}</div>
+                </div>
+                
+                <div class="userId">
+                    <span>用户：{{userid}}</span>
+                    <span class="button" v-on:click="login">登录</span> 
+                    <span class="button" v-on:click="starlogout">登出</span>
+                </div>
+                <div class="userId"> 
+                    <span>请输入用户名：</span>
+                    <input type="text" v-model="userid">
+                </div>
+            </div>
+            <div class="starServ" style="margin-top:20px">
+                <div id="msgButton" class="topic">发送消息</div>
+                <div id="msgGroupButton"  class="topic">群组消息</div>
+                <div id="chatButton" class="topic">聊天室</div>
+                <div id="voipButton" class="topic">一对一聊天</div>
+                <div class="topic" v-on:click="showVideoMeetingTab">多人会议</div>
+            </div>
+        </div>
+        <div id="msgTab" class="tab" style="display:none">
+            <div class="left">
+                    <div class="backButton">  返回</div>
+                    <div id="getUserList" class="backButton">用户</div>
+                    <div v-for="user in userList" v-on:click="userClick(user)">{{user}}</div>
+                    <div id="msgCtrl">
+                        <div style="width:100%;height:100px;padding-top:25px;">
+                            <div id="voipCalling"
+                                style="width:75px;height:75px;margin:0 auto;background-image: url(/static/images/call.jpg);background-size: cover;cursor:pointer;">
+                            </div>
+                        </div>
+                        <div style="width:100%;height:100px;padding-top:25px;">
+                            <div id="voipHangup"
+                                style="width:75px;height:75px;margin:0 auto;background-image: url(/static/images/hangup.jpg);background-size: cover;cursor:pointer;">
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="right">
+                <div  title="消息聊天">
+                    <p class="validateTips">向用户：{{testUSer}} 发送消息</p>
+                </div>
+                <div id="msgZone"  style="width:100%;height:100%">
+                   <p v-for="item in msgDlg" >{{item}}</p>
+                </div>
+                <div id="msginfo" style="width:100%;height:100% ;background:wheat" >
+                    <input type="text" v-model="msgContext" multiple='multiple' style="height: 50px;">
+                    <span class="button" v-on:click="msgSend">发送</span>
+                </div>
+            </div>
+        </div>
+        <div id=groupMsgTab class="tab" style="display:none">
+            <div class="left">
+                <div class="backButton" v-on:click="getUserList">获取用户</div>
+                <div v-for="user in userList" >{{user}}</div>
+                <div class="backButton">用户组</div>
+                <div v-for="item in groups"> {{item}} </div>
+            </div>
+            <div class="right">
+                <div title="创建用户组">
+                    <span>用户组成员:</span><span v-for="(item) in groupList">{{item}},,</span>
+                    <input type="text" v-model="userID"> 
+                    <span class="button" v-on:click="adduser">添加</span><span class="button" v-on:click="createGroup">创建</span>
+                    <div v-for="item in groupList"> {{item}} </div>
+                </div>
+                <div>
+                    <span class="validateTips">向组：{{groupID}} 发送消息</span>
+                    <input type="text" v-model="groupID">
+                    <span class="button" v-on:click="delGroup">删除用户组</span>
+                </div>
+                <div style="width:100%;height:100%">
+                    <p v-for="item in msgDlg" >{{item}}</p>
+                 </div>
+                 <div id="msginfo" style="width:100%;height:100% ;background:wheat" >
+                     <input type="text" v-model="msgContext" multiple='multiple' style="height: 50px;">
+                     <span class="button" v-on:click="msgSend">发送</span>
+                 </div>
+            </div>
+        </div>
+        <div id="chatRoom" class="tab" style="display: none">
+            <div class="left" >
+                <div class="backButton">返回</div>
+            </div>
+            <div class="right">
+                <div>   
+                    <span>填充用户信息:</span>
+                    <p>应用ID：<input type="text" v-model="StarUserInfo.agentId"></p> 
+                    <p>用户id：<input type="text" v-model="StarUserInfo.userId"></p>
+                    <P>应用id_用户id: <input type="text" v-model="StarUserInfo.starUid"></P>
+                    <p>token: <input type="text" v-model="StarUserInfo.starToken"></p>
+                    <span class="button" v-on:click="saveUserInfo">保存</span>
+                    <P>{{StarUserInfo}}</P>
+                </div>   
+                <div>
+                    <span>填充聊天室信息</span>
+                    <P>id: <input type="text" v-model="roomInfo.id"> </P>
+                    <p>name: <input type="text" v-model="roomInfo.name"> </p>
+                    <p>creator: <input type="text" v-model="roomInfo.creator"> </p>
+                    <span class="button" v-on:click="saveChatInfo">保存</span>
+                    <p>{{roomInfo}}</p>
+                </div>
+                <div>
+                    <span class="button" v-on:click="createRoom">创建聊天室</span>
+                </div>
+            </div>
+        </div>
+        <div id="voipTab" class="tab" style="display:none">
+            <div class="left">
+                <div class="backButton" v-on:click="backToMain">返回</div>
+                <div class="backButton" v-on:click="getUserList">用户</div>
+                <div v-for="user in userList"  class="userInfo">{{user}}</div>
+                <div id="msgCtrl">
+                    <div style="width:100%;height:100px;padding-top:25px;">
+                        <div v-on:click="voipCalling"
+                            style="width:75px;height:75px;margin:0 auto;background-image: url(/static/images/call.jpg);background-size: cover;cursor:pointer;">
+                        </div>
+                    </div>
+                    <div style="width:100%;height:100px;padding-top:25px;">
+                        <div v-on:click="voipHangup"
+                            style="width:75px;height:75px;margin:0 auto;background-image: url(/static/images/hangup.jpg);background-size: cover;cursor:pointer;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div>
+                    <input type="text" class="title" v-model="targetUserId" placeholder="输入对方ip">
+                </div>
+                <div v-show="voipCallDlg" class="title" title="发送1对1聊天申请">
+                    <span>向用户：{{calleeId}}  发起1对1聊天申请.</span>
+                    <input type="checkbox" id="voipTypeAudioOnly" v-model="voipAudio"><label for="voipTypeAudioOnly">仅音频</label>
+                    <span class="button" v-on:click="callingVOIP">确定</span>
+                    <span class="button" v-on:click="voipCallDlg=false">取消</span>
+                </div>
+                <div v-show="voipConnectDlg" class="title" >
+                    <span>正在呼叫用户</span>
+                    <div class="spinner" style="width:100px;margin-top:10px;">
+                        <div class="rect1" style="margin-left:5px;"></div>
+                        <div class="rect2" style="margin-left:5px;"></div>
+                        <div class="rect3" style="margin-left:5px;"></div>
+                        <div class="rect4" style="margin-left:5px;"></div>
+                        <div class="rect5" style="margin-left:5px;"></div>
+                    </div>
+                    <span class="button" v-on:click="voipCancleCall">取消</span>   
+                </div>
+                <div v-show="voipResponseDlg" class="title">
+                    <p>收到1对1聊天申请</p>
+                    <span>收到来自用户: {{callerId}} 的 {{callerType}} 聊天申请.</span>
+                    <p>
+                        <span class="button" v-on:click="voipAcceptCall">接收</span>
+                        <span class="button" v-on:click="voipRefuseCall">拒绝</span>
+                    </p>         
+                </div>
+                <div id="voipZone" style="width:100%;height:100%">
+                    <div id="voipVideoZone" style="width:100%;height:100%">
+                        <video id="voipSmallVideo" muted style="width:20%;max-height:100%;float:left"></video>
+						<video id="voipBigVideo" style="max-width:80%;height:100%"></video>
+						<audio id="voipBigAudio" autoplay style="width:100%;height:100%" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="videoMeetingTab" class="tab" style="display: none;">  
+            <div class="left">
+                <div class="backButton" v-on:click="backToMain">返回</div>
+                <div class="backButton" v-on:click="getMeetingList">会议室</div>
+                <div v-for="item in videoMeetingIds" v-on:click="openVideoMeeting(item)">{{item.name}}</div>
+            </div>
+            <div class="right">
+                <div v-show="creatDialog" class="title">
+                    <span>会议室名称:</span>
+                    <input type="text" v-model=roomName> 
+                    <input id="public" type="checkbox" v-model="isPublic"><label for="public">公开  ;</label>
+                    <input id="share" type="checkbox" v-model="isShare"><label for="share">分享屏幕  ;</label>
+                    <span class="button" v-on:click="createRoom">创建</span>
+                    <span class="button" v-on:click="deleteRoom">删除</span>
+                </div>
+                 <div v-show="SelfVideoCtrl" class="title">
+                        <span class="button" v-on:click="videoCtrl">video: {{videoEnable}}</span>
+                        <span class="button" v-on:click="audioCtrl">audio: {{audioEnable}}</span>
+                </div>
+                <div id="videoMeetingVideoZone">
+                    <!-- 为退出视频会议 重置流 拼凑 html 结构 -->
+                    <div> 
+                        <video id="videoMeetingSelfVideo" muted style="width:100%;height:100%"></video>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="static/js/index.js"></script>
+</html>
