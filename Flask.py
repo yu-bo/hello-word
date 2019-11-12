@@ -145,8 +145,13 @@ class webRTCServer(tornado.websocket.WebSocketHandler):
             targetID=data["targetID"]
             localDescription =data["localDescription"]
             if(self.users.get(targetID)):
+                answer={
+                    "type":"getUsers",
+                    "status":"success",
+                    "data": localDescription
+                }
                 Remoteclient=self.users.get(targetID)
-                Remoteclient.write_message( json.dumps(localDescription))
+                Remoteclient.write_message( json.dumps(answer))
             print(data)
 
 
