@@ -13,14 +13,23 @@
         <P> {{ message }} </P>
         <button v-on:click="getDevcices">get devices</button>    
         <button v-on:click="setVideo">set video</button>
-        <button v-on:click="call">call </button>
         <button v-on:click="connect">connect</button>
         <div v-for="(device, index) in devices">{{device.kind + ": " + device.label +" id = " + device.deviceId}}</div>
         <video v-show="videoDisplay" id="video">Video stream not available.</video>
         <div>
+            <span>用户名：</span>
             <input type="text" v-model="userName">
             <button v-on:click="signin">sign in</button>
             <span v-show="logincondition">{{userName + ":注册成功" }}</span>
+        </div>
+        <div>
+            <button v-on:click="getUserList">userList</button>
+            <div v-for="item in userList">{{item}}</div>
+        </div>
+        <div>
+            <span>发起呼叫：</span>
+            <input type="text" v-model="callee">
+            <button v-on:click="call">call </button>
         </div>
         
     </div>
@@ -37,6 +46,8 @@
                 wss :undefined,
                 userName:undefined,
                 logincondition:false,
+                callee:undefined,
+                userList:[],
             },
             methods: {
                 getDevcices: function () {
@@ -80,6 +91,7 @@
                         });
 
                 },
+                //next function
                 call:function(){
                     console.log("call click");
                     var pc =new RTCPeerConnection();
@@ -91,18 +103,28 @@
                         console.log("onaddstream");
                         console.log(evt);
                     };
-                    navigator.getUserMedia(constraints)
+                    navigator.mediaDevices.getUserMedia(constraints)
                     .then(function(stream){
                         pc.createOffer().then(function(offer){
+                            console.log("create offer");
+                            console.log(offer);
                             return pc.setLocalDescription(offer);
                         })
                         .then(function(){
-                            sendToServer({
-                                name: myUsername,
-                                target: targetUsername,
-                                type: "video-offer",
-                                sdp: pc.localDescription
-                            });
+                            var offerInfo=({
+                                    fromID: app.userName,
+                                    targetID: app.callee,
+                                    type: "video-offer",
+                                    localDescription: pc.localDescription // offer
+                                });
+                            console.log(offerInfo);
+                            var message ={
+                                type:"video-offer",
+                                formID:app.userName,
+                                data:offerInfo
+                            };
+                            app.wss.send(JSON.stringify(message));
+                          
                         })
                         .catch(function(reason){
                             console.log(reason)
@@ -112,6 +134,7 @@
                         console.log(err);
                     })
                 },
+                //next function
                 connect:function(){
                     if( !"WebSocket" in window){
                         console.log("浏览器不支持 websocket");
@@ -124,11 +147,16 @@
                     app.wss.onmessage =function(e){
                         console.log("onmessage ");
                         console.log(e);
-                        var data= e.data;
-                        console.log(data);
+                        var data= JSON.parse (e.data);
+                        console.log(data.type);
                         if(data.type=="signin"){
                             console.log("signin success");
                             app.logincondition=true;
+                        }
+                        if(data.type=="getUsers"){
+                            console.log("getUsers success");
+                            app.userList=data.data;
+
                         }
                     };
                     app.wss.onclose =function(e){
@@ -148,10 +176,22 @@
                     }
                     var message={
                         type:"signin",
-                        data:app.userName
-                    }
+                        formID:app.userName
+                    };
                     app.wss.send(JSON.stringify(message));
                 },
+                //next function
+                getUserList:function(){
+                    if(app.wss==undefined){
+                        console.log("websocket 未连接");
+                        return;
+                    }
+                    var message={
+                        type:"getUserList",
+                        formID:app.userName
+                    };
+                    app.wss.send(JSON.stringify(message))
+                }
                 //next function
                 
             },

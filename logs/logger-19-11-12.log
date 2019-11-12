@@ -1,0 +1,50 @@
+2019-11-12 11:27:52,268 - WARNING - Flask.py - index - 69 - you are not logged in
+2019-11-12 19:22:34,335 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1280 ('192.168.8.100', 64259): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:22:35,560 - ERROR - web.py - log_exception - 1788 - Uncaught exception GET / (192.168.8.100)
+HTTPServerRequest(protocol='https', host='192.168.8.100:8000', method='GET', uri='/', version='HTTP/1.1', remote_ip='192.168.8.100')
+Traceback (most recent call last):
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\tornado\websocket.py", line 649, in _run_callback
+    result = callback(*args, **kwargs)
+  File "D:\project\hello-world/Flask.py", line 128, in on_message
+    logger.debug("on message    %s :  %s", data["formID"],data["type"])
+UnboundLocalError: local variable 'data' referenced before assignment
+2019-11-12 19:25:32,494 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1312 ('192.168.8.100', 64521): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:25:33,470 - ERROR - web.py - log_exception - 1788 - Uncaught exception GET / (192.168.8.100)
+HTTPServerRequest(protocol='https', host='192.168.8.100:8000', method='GET', uri='/', version='HTTP/1.1', remote_ip='192.168.8.100')
+Traceback (most recent call last):
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\tornado\websocket.py", line 649, in _run_callback
+    result = callback(*args, **kwargs)
+  File "D:\project\hello-world/Flask.py", line 128, in on_message
+    logger.info("on message    %s :  %s", data["formID"],data["type"])
+UnboundLocalError: local variable 'data' referenced before assignment
+2019-11-12 19:25:54,456 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1320 ('192.168.8.100', 64556): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:26:41,407 - ERROR - web.py - log_exception - 1788 - Uncaught exception GET / (192.168.8.100)
+HTTPServerRequest(protocol='https', host='192.168.8.100:8000', method='GET', uri='/', version='HTTP/1.1', remote_ip='192.168.8.100')
+Traceback (most recent call last):
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\tornado\websocket.py", line 649, in _run_callback
+    result = callback(*args, **kwargs)
+  File "D:\project\hello-world/Flask.py", line 128, in on_message
+    logger.info("on message    %s :  %s", data["formID"],data["type"])
+UnboundLocalError: local variable 'data' referenced before assignment
+2019-11-12 19:33:01,310 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1316 ('192.168.8.100', 65306): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:34:15,520 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1312 ('192.168.8.100', 65421): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:35:31,377 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1308 ('192.168.8.100', 49161): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:35:32,217 - ERROR - web.py - log_exception - 1788 - Uncaught exception GET / (192.168.8.100)
+HTTPServerRequest(protocol='https', host='192.168.8.100:8000', method='GET', uri='/', version='HTTP/1.1', remote_ip='192.168.8.100')
+Traceback (most recent call last):
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\tornado\websocket.py", line 649, in _run_callback
+    result = callback(*args, **kwargs)
+  File "D:\project\hello-world/Flask.py", line 129, in on_message
+    logger.info("on message    %s :  %s", data["formID"],data["type"])
+UnboundLocalError: local variable 'data' referenced before assignment
+2019-11-12 19:38:12,733 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1352 ('192.168.8.100', 49418): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:43:40,440 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1336 ('192.168.8.100', 49852): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:43:40,442 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1340 ('192.168.8.100', 49853): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:43:42,742 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1348 ('192.168.8.100', 49858): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:43:45,197 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1348 ('192.168.8.100', 49862): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:44:01,760 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1404 ('192.168.8.100', 49888): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:47:23,835 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1312 ('192.168.8.100', 50169): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:47:23,837 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1308 ('192.168.8.100', 50168): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:47:26,899 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1300 ('192.168.8.100', 50176): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:47:28,489 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1300 ('192.168.8.100', 50180): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-12 19:47:44,956 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1400 ('192.168.8.100', 50209): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)

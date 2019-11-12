@@ -1,4 +1,4 @@
-from flask import Flask,request,session,escape,render_template,make_response,jsonify,logging,send_file
+from flask import Flask,request,session,escape,render_template,make_response,jsonify,send_file
 import flask_login
 from flask_bootstrap import Bootstrap
 import os
@@ -12,6 +12,7 @@ from tornado.httpserver import HTTPServer
 import json
 
 app = Flask(__name__)
+
 #bootstrap = Bootstrap(app)
 login_manager =flask_login.LoginManager()
 login_manager.init_app(app)
@@ -20,7 +21,9 @@ login_manager.login_view='login'
 login_manager.login_message='please login!'
 login_manager.session_protection='strong'
 
-logger =app.logger
+
+#logger=app.logger
+logger =logging.getLogger()
 
 
 def make_dir():
@@ -33,14 +36,19 @@ def logger_config():
     
     log_file_name = 'logger-' + time.strftime("%y-%m-%d",time.localtime(time.time())) + '.log'
     log_file_str =make_dir() + log_file_name
-    log_level = logging.INFO
-
-    handler=logging.FileHandler(log_file_str,encoding='utf-8')
-    handler.setLevel(log_level)
-    logging_format = logging.Formatter(
-    '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
-    handler.setFormatter(logging_format)
-    logger.addHandler(handler)
+    log_level = logging.DEBUG
+    log_format = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
+    # 输出到文件
+    file_handler=logging.FileHandler(log_file_str,encoding='utf-8')
+    file_handler.setLevel(log_level)
+    file_handler.setFormatter(log_format)
+    # 输出到控制台
+    console_handle=logging.StreamHandler()
+    console_handle.setLevel(log_level)
+    console_handle.setFormatter(log_format)
+    logger.handlers.clear()
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handle)
 
 logger_config()
 
@@ -107,32 +115,40 @@ class webRTCServer(tornado.websocket.WebSocketHandler):
     users = {}
     current_path = os.path.abspath(".")
 
-
-    
-
-
     def open(self):
-        # 连接建立时往房间添加用户
-        print("client connect")
+        # 连接建立时触发
+        logger.info("client connect %s",  str( self))
         self.clients.add(self)
         print(self)
 
     def on_message(self, message):
-        print("on message")
+        #收到消息 
         data = json.loads(message)
-
+        logger.info("on message    %s :  %s", data["formID"],data["type"])
         if(data["type"]=="signin"):
-            self.users[data["data"]]=self
-            print(self.users)
+            self.users[data["formID"]]=self
             answer = {
                 "type":"signin",
                 "status":"success"
             }
             self.write_message( json.dumps(answer))
+        if(data["type"]=="getUserList"):
+            answer={
+                "type":"getUsers",
+                "status":"success",
+                "data": list(self.users.keys())
+            }
+            self.write_message( json.dumps(answer))
+        if(data["type"]=="video-offer"):
+            data=data["data"]
+            fromID=data["fromID"]
+            targetID=data["targetID"]
+            localDescription =data["localDescription"]
+            if(self.users.get(targetID)):
+                Remoteclient=self.users.get(targetID)
+                Remoteclient.write_message( json.dumps(localDescription))
+            print(data)
 
-        # 接收到消息时进行广
-        for client in self.clients: 
-            client.write_message(message, binary=True)
 
     def on_close(self):
         print("client close")
