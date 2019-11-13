@@ -22,10 +22,6 @@ login_manager.login_message='please login!'
 login_manager.session_protection='strong'
 
 
-#logger=app.logger
-logger =logging.getLogger()
-
-
 def make_dir():
     current_path = os.getcwd()
     path = current_path+ "\logs\\" 
@@ -33,7 +29,6 @@ def make_dir():
         os.makedirs(path)
     return path
 def logger_config():
-    
     log_file_name = 'logger-' + time.strftime("%y-%m-%d",time.localtime(time.time())) + '.log'
     log_file_str =make_dir() + log_file_name
     log_level = logging.DEBUG
@@ -46,11 +41,19 @@ def logger_config():
     console_handle=logging.StreamHandler()
     console_handle.setLevel(log_level)
     console_handle.setFormatter(log_format)
+
+    #logger=app.logger
+    logger =logging.getLogger()
+    logger.setLevel(log_level)
     logger.handlers.clear()
     logger.addHandler(file_handler)
     logger.addHandler(console_handle)
+    return logger
 
-logger_config()
+
+logger = logger_config()
+
+
 
 def save_wave_file(file_name,data):
     wf = wave.open(file_name,'wb')
@@ -79,7 +82,7 @@ def index():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    message="123123"
+    logger.info("test page")
     return send_file("templates/test.html")
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -124,9 +127,9 @@ class webRTCServer(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         #收到消息 
         data = json.loads(message)
-        logger.info("on message    %s :  %s", data["formID"],data["type"])
+        logger.info("on message    %s :  %s", data["fromID"],data["type"])
         if(data["type"]=="signin"):
-            self.users[data["formID"]]=self
+            self.users[data["fromID"]]=self
             answer = {
                 "type":"signin",
                 "status":"success"
@@ -139,21 +142,48 @@ class webRTCServer(tornado.websocket.WebSocketHandler):
                 "data": list(self.users.keys())
             }
             self.write_message( json.dumps(answer))
-        if(data["type"]=="video-offer"):
-            data=data["data"]
+        # caller to callee
+        if(data["type"]=="video-offer"): 
+            data_=data["data"]
             fromID=data["fromID"]
             targetID=data["targetID"]
-            localDescription =data["localDescription"]
+            localDescription =data_["localDescription"]
             if(self.users.get(targetID)):
                 answer={
-                    "type":"getUsers",
+                    "type":"video-offer",
                     "status":"success",
-                    "data": localDescription
+                    "data": data_
                 }
-                Remoteclient=self.users.get(targetID)
-                Remoteclient.write_message( json.dumps(answer))
+                targetClient=self.users.get(targetID)
+                targetClient.write_message( json.dumps(answer))
             print(data)
-
+        # callee to caller
+        if(data["type"]=="video-answer"):
+            data_=data.get("data")
+            fromID=data.get("fromID")
+            targetID=data.get("targetID")
+            logger.debug(fromID+" to " + targetID +"  localDescription")
+            localDescription =data_["localDescription"]
+            if(self.users.get(targetID)):
+                answer={
+                    "type":"video-answer",
+                    "status":"success",
+                    "data":data_
+                }
+                targetClient=self.users.get(targetID)
+                targetClient.write_message( json.dumps(answer))
+        #new ice candidate
+        if(data["type"]=="new-ice-candidate"):
+            print(json.dumps(data))
+            targetID =data["targetID"]
+            if(self.users.get(targetID)):
+                answer={
+                    "type":"new-ice-candidate",
+                    "status":"success",
+                    "data":data
+                }
+                targetClient=self.users.get(targetID)
+                targetClient.write_message( json.dumps(answer))
 
     def on_close(self):
         print("client close")

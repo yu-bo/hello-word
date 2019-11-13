@@ -31,6 +31,10 @@
             <input type="text" v-model="callee">
             <button v-on:click="call">call </button>
         </div>
+        <div title="video">
+            <video id="localVideo"></video>
+            <video id="remoteVideo"></video>
+        </div>
         
     </div>
 
@@ -48,83 +52,46 @@
                 logincondition:false,
                 callee:undefined,
                 userList:[],
+                pc:undefined,
+                constraints:undefined,
             },
             methods: {
-                getDevcices: function () {
-                    console.log("getDevcices clicked");
-                    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-                        console.log("不支持 enumerateDevices() .");
-                        return;
-                    }
-                    navigator.mediaDevices.enumerateDevices()
-                        .then(function (devices) {
-                            console.log(this);
-                            app.devices = devices;
-                            devices.forEach(function (device) {
-                                console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
-                            })
-                        })
-                        .catch(function (err) {
-                            console.log(err.name + ": " + err.message);
-                        })
-                },
-                setVideo: function () {
-                    
-                    var servers = null;
-                    var constraints = window.constraints = {
-                        audio: false,
-                        video: true
-                    };
-                    var video = document.querySelector('video');
-                    console.log(video);
-                    navigator.mediaDevices.getUserMedia(constraints)
-                        .then(function (mediaStream) {
-                            var video = document.querySelector('video');
-                            video.srcObject = mediaStream;
-                            video.onloadedmetadata = function (e) {
-                                video.play();
-                            };
-                            app.videoDisplay=true;
-                        })
-                        .catch(function(err) { 
-                            console.log(err.name + ": " + err.message); 
-                        });
-
-                },
+   
                 //next function
                 call:function(){
                     console.log("call click");
-                    var pc =new RTCPeerConnection();
-                    var constraints = window.constraints = {
-                        audio: false,
-                        video: true
-                    };
-                    pc.onaddstream =function (evt){
+               
+                    app.pc.onaddstream =function (evt){
                         console.log("onaddstream");
                         console.log(evt);
                     };
                     navigator.mediaDevices.getUserMedia(constraints)
                     .then(function(stream){
-                        pc.createOffer().then(function(offer){
+                        var video=document.getElementById("localVideo");
+                        video.srcObject=stream;
+                        video.play();
+                        stream.getTracks().forEach(function(track){
+                            app.pc.addTrack(track,stream);
+                        });
+                        app.pc.createOffer().then(function(offer){
                             console.log("create offer");
                             console.log(offer);
-                            return pc.setLocalDescription(offer);
+                            return app.pc.setLocalDescription(offer);
                         })
-                        .then(function(){
-                            var offerInfo=({
+                        .then(function(){// 对应 setLocalDescription 回调
+                            var offerInfo={
                                     fromID: app.userName,
                                     targetID: app.callee,
                                     type: "video-offer",
-                                    localDescription: pc.localDescription // offer
-                                });
+                                    localDescription: app.pc.localDescription // offer
+                                };
                             console.log(offerInfo);
                             var message ={
                                 type:"video-offer",
-                                formID:app.userName,
+                                fromID:app.userName,
                                 data:offerInfo
                             };
-                            app.wss.send(JSON.stringify(message));
-                          
+                            app.wss.send(JSON.stringify(message)); 
                         })
                         .catch(function(reason){
                             console.log(reason)
@@ -145,23 +112,175 @@
                         console.log("onopen");
                     };
                     app.wss.onmessage =function(e){
-                        console.log("onmessage ");
-                        console.log(e);
+                        console.log("onmessage :"+JSON.stringify(e.data));
                         var data= JSON.parse (e.data);
-                        console.log(data.type);
                         if(data.type=="signin"){
                             console.log("signin success");
                             app.logincondition=true;
+                            app.pc=new RTCPeerConnection();
+                            app.constraints=window.constraints= {
+                                audio: false,
+                                video: true
+                            };
+                            app.pc.onicecandidate=app.handleICECandidateEvent;
                         }
+                        // next function
                         if(data.type=="getUsers"){
                             console.log("getUsers success");
                             app.userList=data.data;
-
                         }
+                        // next function
+                        if(data.type=="video-offer"){
+                            
+                            var data = data.data;
+                            console.log("video-offer :"+JSON.stringify(data));
+                            var offer = data.localDescription;
+                            navigator.mediaDevices.getUserMedia(constraints)
+                            .then(function(stream){
+                                stream.getTracks().forEach(function(track){
+                                    app.pc.addTrack(track,stream);
+                                });
+                                app.pc.setRemoteDescription(offer)
+                                .then(function(){
+                                    app.pc.createAnswer().then(function(answer){
+                                        console.log(answer);
+                                        return app.pc.setLocalDescription(answer)
+                                    })
+                                    .then(function(){
+                                        //Send the answer to the remote peer through the signaling server.
+                                        var answerInfo=({
+                                            fromID: data.fromID,
+                                            targetID: data.targetID,
+                                            type: "video-answer",
+                                            localDescription: app.pc.localDescription // offer
+                                        });
+                                        console.log("sendMessage:"+JSON.stringify( answerInfo));
+                                        var message={
+                                            type :"video-answer",
+                                            fromID:app.userName,
+                                            targetID:data.fromID,  
+                                            data:answerInfo
+                                        }
+                                        app.wss.send(JSON.stringify(message));
+
+                                    })
+                                    .catch(function(err){
+                                        console.log(err);
+                                    })
+                                })
+                                .catch()
+                            })
+                            .catch(function(err){
+                                console.log(err);
+                            })
+                        }
+                        // next function
+                        if(data.type=="video-answer"){
+                            var data=data.data;
+                            console.log("video-answer:"+JSON.stringify(data));
+                            var answer =data.localDescription;
+                            app.pc.setRemoteDescription(new RTCSessionDescription( answer))
+                            .then(function(){
+                                console.log("video-answer set sdp");
+                            })
+                            .catch(function(err){
+                                console.log(err);
+                            });
+                            
+                        }
+                        //next function
+                        if(data.type=="new-ice-candidate"){
+                            app.handleNewICECandidateMsg(data.data);
+                        }
+                        //next function
                     };
                     app.wss.onclose =function(e){
                         console.log("onclose ");
                     }
+
+                },
+                //next function
+                getDevcices: function () {
+                    console.log("getDevcices clicked");
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+                        console.log("不支持 enumerateDevices() .");
+                        return;
+                    }
+                    navigator.mediaDevices.enumerateDevices()
+                        .then(function (devices) {
+                            console.log(this);
+                            app.devices = devices;
+                            devices.forEach(function (device) {
+                                console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+                            })
+                        })
+                        .catch(function (err) {
+                            console.log(err.name + ": " + err.message);
+                        })
+                },
+                // next functinon
+                handleICECandidateEvent:function(event){
+                    console.log("handleICECandidateEvent:"+ JSON.stringify(event));
+
+                    if(event.candidate){
+                        var message={
+                            fromID:app.userName,
+                            type:"new-ice-candidate",
+                            targetID: app.callee,
+                            candidate: event.candidate
+                        }
+                        //app.wss.send(JSON.stringify(message));
+                    }
+                },
+                //next function
+                handleNewICECandidateMsg:function(msg){
+                    var candidate =new RTCIceCandidate(msg.candidate)
+                    app.pc.addIceCandidate(candidate).catch(app.reportError)
+                },
+                // next function
+                handleTrackEvent:function(event){
+                    var video=document.getElementById("remoteVideo");
+                    video.srcObject=event.stream;
+                    video.play();
+                },
+               
+                //next function
+                getUserList:function(){
+                    if(app.wss==undefined){
+                        console.log("websocket 未连接");
+                        return;
+                    }
+                    var message={
+                        type:"getUserList",
+                        fromID:app.userName
+                    };
+                    app.wss.send(JSON.stringify(message))
+                },
+                // next function
+                reportError :function(err){
+                    console.log(err);
+                },
+                //next function
+                setVideo: function () {
+                    
+                    var servers = null;
+                    var constraints = window.constraints = {
+                        audio: false,
+                        video: true
+                    };
+                    var video = document.getElementById('localVideo');
+                    console.log(video);
+                    navigator.mediaDevices.getUserMedia(constraints)
+                        .then(function (mediaStream) {
+                            video.srcObject = mediaStream;
+                            video.onloadedmetadata = function (e) {
+                                video.play();
+                            };
+                            app.videoDisplay=true;
+                        })
+                        .catch(function(err) { 
+                            console.log(err.name + ": " + err.message); 
+                        });
 
                 },
                 //next function
@@ -176,23 +295,10 @@
                     }
                     var message={
                         type:"signin",
-                        formID:app.userName
+                        fromID:app.userName
                     };
                     app.wss.send(JSON.stringify(message));
                 },
-                //next function
-                getUserList:function(){
-                    if(app.wss==undefined){
-                        console.log("websocket 未连接");
-                        return;
-                    }
-                    var message={
-                        type:"getUserList",
-                        formID:app.userName
-                    };
-                    app.wss.send(JSON.stringify(message))
-                }
-                //next function
                 
             },
         });
