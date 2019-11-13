@@ -719,3 +719,38 @@ KeyError: 'targetID'
 2019-11-13 20:22:55,068 - INFO - Flask.py - on_message - 130 - on message    456456 :  video-offer
 2019-11-13 20:23:40,922 - INFO - Flask.py - on_message - 130 - on message    123123 :  video-answer
 2019-11-13 20:27:23,071 - DEBUG - Flask.py - on_message - 165 - 456456 to 123123  localDescription
+2019-11-13 20:33:09,490 - DEBUG - selector_events.py - __init__ - 54 - Using selector: SelectSelector
+2019-11-13 20:33:13,561 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1284 ('192.168.8.100', 52393): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-13 20:33:13,563 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1300 ('192.168.8.100', 52392): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-13 20:33:13,574 - INFO - Flask.py - test - 85 - test page
+2019-11-13 20:33:13,579 - INFO - wsgi.py - _log - 196 - 200 GET /test (192.168.8.100) 7.01ms
+2019-11-13 20:33:13,598 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 3.00ms
+2019-11-13 20:33:16,510 - INFO - Flask.py - test - 85 - test page
+2019-11-13 20:33:16,512 - INFO - wsgi.py - _log - 196 - 200 GET /test (192.168.8.100) 2.99ms
+2019-11-13 20:33:16,513 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1284 ('192.168.8.100', 52402): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-13 20:33:16,526 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 2.01ms
+2019-11-13 20:33:21,221 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1312 ('192.168.8.100', 52407): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-13 20:33:21,242 - INFO - web.py - log_request - 2246 - 101 GET / (192.168.8.100) 2.01ms
+2019-11-13 20:33:21,243 - INFO - Flask.py - open - 123 - client connect <__main__.webRTCServer object at 0x00000277E502D0B8>
+2019-11-13 20:33:22,064 - INFO - Flask.py - on_message - 130 - on message    123123 :  signin
+2019-11-13 20:33:25,035 - INFO - Flask.py - test - 85 - test page
+2019-11-13 20:33:25,037 - INFO - wsgi.py - _log - 196 - 200 GET /test (192.168.8.100) 2.99ms
+2019-11-13 20:33:25,038 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1300 ('192.168.8.100', 52414): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-13 20:33:25,050 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 3.01ms
+2019-11-13 20:33:28,671 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1328 ('192.168.8.100', 52421): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-13 20:33:28,690 - INFO - web.py - log_request - 2246 - 101 GET / (192.168.8.100) 1.00ms
+2019-11-13 20:33:28,691 - INFO - Flask.py - open - 123 - client connect <__main__.webRTCServer object at 0x00000277E502D780>
+2019-11-13 20:33:29,449 - INFO - Flask.py - on_message - 130 - on message    123123 :  signin
+2019-11-13 20:33:33,516 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1284 ('192.168.8.100', 52428): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-13 20:33:33,536 - INFO - web.py - log_request - 2246 - 101 GET / (192.168.8.100) 0.99ms
+2019-11-13 20:33:33,537 - INFO - Flask.py - open - 123 - client connect <__main__.webRTCServer object at 0x00000277E502DFD0>
+2019-11-13 20:33:34,145 - INFO - Flask.py - on_message - 130 - on message    456456 :  signin
+2019-11-13 20:33:45,834 - INFO - Flask.py - on_message - 130 - on message    456456 :  video-offer
+2019-11-13 20:33:54,461 - ERROR - web.py - log_exception - 1788 - Uncaught exception GET / (192.168.8.100)
+HTTPServerRequest(protocol='https', host='192.168.8.100:8000', method='GET', uri='/', version='HTTP/1.1', remote_ip='192.168.8.100')
+Traceback (most recent call last):
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\tornado\websocket.py", line 649, in _run_callback
+    result = callback(*args, **kwargs)
+  File "D:\project\hello-world/Flask.py", line 149, in on_message
+    targetID=data["targetID"]
+KeyError: 'targetID'
