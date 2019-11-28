@@ -113,10 +113,12 @@ def login():
 
 
 class webRTCServer(tornado.websocket.WebSocketHandler):
-    # 用户集合
+    # 用户集合 类属性
     clients = set()
     users = {}
     current_path = os.path.abspath(".")
+    
+
 
     def open(self):
         # 连接建立时触发
@@ -126,16 +128,18 @@ class webRTCServer(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         #收到消息 
-        data = json.loads(message)
-        logger.info("on message    %s :  %s", data["fromID"],data["type"])
-        if(data["type"]=="signin"):
-            self.users[data["fromID"]]=self
+        msg = json.loads(message)
+        logger.info(message)
+        if(msg.get("msgType")=="signin"):
+            self.users[msg.get("msgFrom")]=self
+            self.userID=msg.get("msgFrom")
             answer = {
                 "type":"signin",
                 "status":"success"
             }
             self.write_message( json.dumps(answer))
-        if(data["type"]=="getUserList"):
+        
+        if(msg.get("msgType")=="getUserList"):
             answer={
                 "type":"getUsers",
                 "status":"success",
@@ -143,46 +147,42 @@ class webRTCServer(tornado.websocket.WebSocketHandler):
             }
             self.write_message( json.dumps(answer))
         # caller to callee
-        if(data["type"]=="video-offer"): 
-            data_=data["data"]
-            fromID=data["fromID"]
-            targetID=data["targetID"]
-            localDescription =data_["localDescription"]
-            if(self.users.get(targetID)):
+        if(msg.get("msgType")=="video-offer"): 
+            msgData=msg.get("msgData")
+            msgFrom=msg.get("msgFrom")
+            msgTo= msg.get("msgTo")
+            if(self.users.get(msgTo)):
                 answer={
                     "type":"video-offer",
                     "status":"success",
-                    "data": data_
+                    "data": msgData
                 }
-                targetClient=self.users.get(targetID)
+                targetClient=self.users.get(msgTo)
                 targetClient.write_message( json.dumps(answer))
-            print(data)
+           
         # callee to caller
-        if(data["type"]=="video-answer"):
-            data_=data.get("data")
-            fromID=data.get("fromID")
-            targetID=data.get("targetID")
-            logger.debug(fromID+" to " + targetID +"  localDescription")
-            localDescription =data_["localDescription"]
-            if(self.users.get(targetID)):
+        if(msg.get("msgType")=="video-answer"):
+            msgData=msg.get("msgData")
+            msgTo=msg.get("msgTo")
+            if(self.users.get(msgTo)):
                 answer={
                     "type":"video-answer",
                     "status":"success",
-                    "data":data_
+                    "data":msgData
                 }
-                targetClient=self.users.get(targetID)
+                targetClient=self.users.get(msgTo)
                 targetClient.write_message( json.dumps(answer))
         #new ice candidate
-        if(data["type"]=="new-ice-candidate"):
-            print(json.dumps(data))
-            targetID =data["targetID"]
-            if(self.users.get(targetID)):
+        if(msg.get("msgType")=="new-ice-candidate"):
+            msgTo =msg.get("msgTo")
+            msgData=msg.get("msgData")
+            if(self.users.get(msgTo)):
                 answer={
                     "type":"new-ice-candidate",
                     "status":"success",
-                    "data":data
+                    "data":msgData
                 }
-                targetClient=self.users.get(targetID)
+                targetClient=self.users.get(msgTo)
                 targetClient.write_message( json.dumps(answer))
 
     def on_close(self):
