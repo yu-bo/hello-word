@@ -1,0 +1,69 @@
+2019-11-29 20:05:00,022 - DEBUG - selector_events.py - __init__ - 54 - Using selector: SelectSelector
+2019-11-29 20:05:08,463 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1288 ('192.168.8.100', 56503): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:05:08,464 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1212 ('192.168.8.100', 56502): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:05:08,578 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1212 ('192.168.8.100', 56505): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:05:08,580 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1308 ('192.168.8.100', 56506): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:05:12,355 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1288 ('192.168.8.100', 56508): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:05:12,357 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1308 ('192.168.8.100', 56509): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:05:12,370 - INFO - Flask.py - test - 85 - test page
+2019-11-29 20:05:12,375 - INFO - wsgi.py - _log - 196 - 200 GET /test (192.168.8.100) 7.99ms
+2019-11-29 20:05:12,399 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 5.00ms
+2019-11-29 20:05:12,664 - WARNING - wsgi.py - _log - 196 - 404 GET /favicon.ico (192.168.8.100) 26.01ms
+2019-11-29 20:05:18,561 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:05:18,563 - ERROR - app.py - log_exception - 1761 - Exception on /live [GET]
+Traceback (most recent call last):
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\flask\app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\flask\app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\flask\app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\flask\_compat.py", line 35, in reraise
+    raise value
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\flask\app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "D:\project\hello-world/Flask.py", line 91, in live
+    return send_file('templates/live.thml')
+  File "D:\Miniconda3\envs\sabc\lib\site-packages\flask\helpers.py", line 588, in send_file
+    file = open(filename, 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\project\\hello-world\\templates/live.thml'
+2019-11-29 20:05:18,567 - ERROR - wsgi.py - _log - 196 - 500 GET /live (192.168.8.100) 5.99ms
+2019-11-29 20:05:18,568 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1212 ('192.168.8.100', 56518): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:06:04,108 - DEBUG - selector_events.py - __init__ - 54 - Using selector: SelectSelector
+2019-11-29 20:06:05,503 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 996 ('192.168.8.100', 56552): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:06:05,505 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1308 ('192.168.8.100', 56551): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:06:05,516 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:06:05,521 - INFO - wsgi.py - _log - 196 - 200 GET /live (192.168.8.100) 7.01ms
+2019-11-29 20:06:05,532 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 3.00ms
+2019-11-29 20:06:53,093 - DEBUG - selector_events.py - __init__ - 54 - Using selector: SelectSelector
+2019-11-29 20:06:58,630 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1320 ('192.168.8.100', 56625): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:06:58,632 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1324 ('192.168.8.100', 56626): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:06:58,646 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:06:58,651 - INFO - wsgi.py - _log - 196 - 200 GET /live (192.168.8.100) 9.00ms
+2019-11-29 20:06:58,668 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 3.00ms
+2019-11-29 20:15:01,914 - DEBUG - selector_events.py - __init__ - 54 - Using selector: SelectSelector
+2019-11-29 20:15:04,517 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1280 ('192.168.8.100', 57491): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:15:04,518 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1300 ('192.168.8.100', 57492): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:15:04,530 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:15:04,535 - INFO - wsgi.py - _log - 196 - 200 GET /live (192.168.8.100) 8.01ms
+2019-11-29 20:15:04,559 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 5.00ms
+2019-11-29 20:17:06,056 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1304 ('192.168.8.100', 57654): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:17:06,058 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:17:06,060 - INFO - wsgi.py - _log - 196 - 200 GET /live (192.168.8.100) 3.00ms
+2019-11-29 20:17:06,072 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 2.00ms
+2019-11-29 20:17:31,453 - DEBUG - selector_events.py - __init__ - 54 - Using selector: SelectSelector
+2019-11-29 20:17:32,829 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1028 ('192.168.8.100', 57693): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:17:32,831 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1300 ('192.168.8.100', 57694): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:17:32,842 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:17:32,848 - INFO - wsgi.py - _log - 196 - 200 GET /live (192.168.8.100) 8.00ms
+2019-11-29 20:17:32,863 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 4.01ms
+2019-11-29 20:17:50,704 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 1308 ('192.168.8.100', 57718): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:17:50,706 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:17:50,708 - INFO - wsgi.py - _log - 196 - 200 GET /live (192.168.8.100) 3.00ms
+2019-11-29 20:17:50,747 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 3.00ms
+2019-11-29 20:18:30,867 - WARNING - iostream.py - _do_ssl_handshake - 1407 - SSL Error on 996 ('192.168.8.100', 57765): [SSL: SSLV3_ALERT_CERTIFICATE_UNKNOWN] sslv3 alert certificate unknown (_ssl.c:852)
+2019-11-29 20:18:30,869 - INFO - Flask.py - live - 90 - live page
+2019-11-29 20:18:30,871 - INFO - wsgi.py - _log - 196 - 200 GET /live (192.168.8.100) 3.00ms
+2019-11-29 20:18:30,885 - INFO - wsgi.py - _log - 196 - 200 GET /static/js/jquery-3.2.1.min.js (192.168.8.100) 2.00ms

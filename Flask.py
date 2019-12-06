@@ -85,6 +85,12 @@ def test():
     logger.info("test page")
     return send_file("templates/test.html")
 
+@app.route('/live',methods=['GET','POST'])
+def live():
+    logger.info("live page")
+    return send_file('templates/live.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
