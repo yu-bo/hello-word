@@ -1,0 +1,4 @@
+2019-12-10 13:57:38,459 - DEBUG - selector_events.py - __init__ - 65 - Using selector: SelectSelector
+2019-12-10 14:02:31,627 - DEBUG - selector_events.py - __init__ - 65 - Using selector: SelectSelector
+2019-12-10 14:02:44,809 - DEBUG - selector_events.py - __init__ - 65 - Using selector: SelectSelector
+2019-12-10 14:03:05,065 - DEBUG - selector_events.py - __init__ - 65 - Using selector: SelectSelector
