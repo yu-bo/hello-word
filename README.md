@@ -1,6 +1,6 @@
-# hello-word
+# webrtc demo
 
+# env  python3.6 flask flask_login tornado
 
-#pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv-python
-#pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Pillow
-#pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pyqt5
+# index.html 需要starrtc-server 作为服务器  
+# test.html 为webrtc demo 需要 ssh证书
