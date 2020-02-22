@@ -9,7 +9,7 @@
             "name": "Python: 当前文件",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/multimodel.py",
+            "program": "${workspaceFolder}/Flask.py",
             "console": "integratedTerminal"
         }
     ]

@@ -87,7 +87,7 @@
                         console.log("浏览器不支持 websocket");
                         return;
                     }
-                    app.wss=new WebSocket("wss://192.168.8.100:8000")
+                    app.wss=new WebSocket("wss://192.168.1.8:8000")
                     app.wss.onopen =function(e){
                         console.log("onopen");
                     };
@@ -256,7 +256,7 @@
                         return;
                     }
                     var message = {
-                        msgtype: "getUserList",
+                        msgType: "getUserList",
                         msgFrom: app.userName,
                         msgTo: null,
                         msgData: null,

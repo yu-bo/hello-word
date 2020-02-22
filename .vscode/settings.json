@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "D:\\Miniconda3\\envs\\sabc\\python.exe",
+    "python.pythonPath": "D:\\Miniconda3\\envs\\audio\\python.exe",
     "python.linting.pylintArgs": ["--generate-members"],
     "emmet.syntaxProfiles":{
         "vue-html": "html",
